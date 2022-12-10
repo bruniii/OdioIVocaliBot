@@ -1,0 +1,4 @@
+python-telegram-bot[webhooks]>=20.0a6
+git+https://github.com/openai/whisper.git
+ffmpeg
+python-dotenv

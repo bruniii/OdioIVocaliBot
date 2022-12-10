@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  bot-odioivocali:
+    build:
+      context: "."
+      dockerfile: Dockerfile
+    container_name: "BOT-OdioIVocali"
+    networks:
+      bot-odioivocali:
+    environment:
+      - COMPOSE_CONVERT_WINDOWS_PATHS=1
+    env_file:
+      - .env
+    volumes:
+      - .:/code
+    ports:
+      - 8443:8443
+    restart: always
+
+
+networks:
+
+  bot-botda:
+    driver: bridge
+    name: "bot-odioivocali"
+    internal: false
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.23.22.0/24
+          gateway: 172.23.22.1
