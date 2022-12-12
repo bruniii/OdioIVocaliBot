@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+import time
 
 load_dotenv()
 
@@ -25,13 +26,15 @@ async def info(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     )
 
 async def voice_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    tic = time.perf_counter()
     if update.message.voice.duration > 30:
         logger.info(f"Vocale ricevuto da {update.effective_user.first_name}. Durata (s): {update.message.voice.duration}.")
         pass
     file = await context.bot.get_file(update.message.voice.file_id)
     audio_data = await file.download_to_drive()
     testo = transcribe_file(audio_data.name)
-    logger.info(f"Vocale ricevuto da {update.effective_user.first_name}. Durata (s): {update.message.voice.duration}.  Testo: {testo}.")
+    toc = time.perf_counter()
+    logger.info(f"Vocale ricevuto da {update.effective_user.first_name}. Durata (s): {update.message.voice.duration}, elaborati in {toc-tic} s.  Testo: {testo}.")
     await update.message.reply_text(f"{update.effective_user.first_name} ha detto: {testo}.")
     os.remove(audio_data.name)
 
